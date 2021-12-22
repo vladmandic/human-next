@@ -13,4 +13,14 @@ module.exports = {
     buildActivity: true,
     buildActivityPosition: 'bottom-right',
   },
+  images: {
+    loader: 'custom',
+  },
+  basePath: '/human-next/out',
+  assetPrefix: '/human-next/out/',
+  exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
+    return {
+      '/': { page: '/' },
+    }
+  },
 }

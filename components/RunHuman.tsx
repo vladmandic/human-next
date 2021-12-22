@@ -12,15 +12,15 @@ const config: Partial<Config> = {
 }
 
 interface Props { inputId: string, outputId: string };
-interface State { ready: boolean };
+interface State { ready: boolean, frame: number };
 
-class LoadHuman extends Component<Props, State> {
+class RunHuman extends Component<Props, State> {
   HumanImport: any;
   human: Human | undefined = undefined;
   video: HTMLVideoElement | undefined = undefined;
   canvas: HTMLCanvasElement | undefined = undefined;
-  timestamp = { detect: 0, draw: 0 };
-  fps = { detect: 0, draw: 0 };
+  timestamp: number = 0;
+  fps: number = 0;
   
   constructor(props: Props) { // human is loaded as dynamic import in component constructor and then sets ready state
     super(props)
@@ -54,37 +54,26 @@ class LoadHuman extends Component<Props, State> {
     }
   }
 
-  override render(this: LoadHuman) {
-    if (this && this.state && this.state.ready) { // once component is created and human state is ready trigger detection and draw loops
-      this.detectionLoop(); // start detection loop
-      this.drawLoop(); // start draw loop 
+  override render(this: RunHuman) {
+    if (this && this.state && this.state.ready) this.detect(); // start detection loop once component is created and human state is ready trigger detection and draw loops
+    if (!this || !this.video || !this.canvas || !this.human || !this.human.result) return null;
+    if (!this.video.paused) {
+      const interpolated = this.human.next(this.human.result); // smoothen result using last-known results
+      this.human.draw.canvas(this.video, this.canvas); // draw canvas to screen
+      this.human.draw.all(this.canvas, interpolated); // draw labels, boxes, lines, etc.
     }
+    status(this.video.paused ? 'paused' : `fps: ${this.fps.toFixed(1).padStart(5, ' ')}`); // write status
     return null;
   }
 
-  async detectionLoop(this: LoadHuman) { // main detection loop
+  async detect(this: RunHuman) { // main detection loop
     if (!this || !this.human || !this.video || !this.canvas) return;
     await this.human.detect(this.video); // actual detection; were not capturing output in a local variable as it can also be reached via this.human.result
     const now = this.human.now();
-    this.fps.detect = 1000 / (now - this.timestamp.detect);
-    this.timestamp.detect = now;
-    // @ts-ignore requestVideoFrameCallback is not yet defined in tslib
-    this.video.requestVideoFrameCallback(() => this.detectionLoop()); // trigger detect when next frame is available
-  }
-  
-  async drawLoop(this: LoadHuman) { // main screen refresh loop
-    if (!this || !this.human || !this.video || !this.canvas) return;
-    if (!this.video.paused) {
-      const interpolated = await this.human.next(this.human.result); // smoothen result using last-known results
-      await this.human.draw.canvas(this.video, this.canvas); // draw canvas to screen
-      await this.human.draw.all(this.canvas, interpolated); // draw labels, boxes, lines, etc.
-      const now = this.human.now();
-      this.fps.draw = 1000 / (now - this.timestamp.draw);
-      this.timestamp.draw = now;
-    }
-    status(this.video.paused ? 'paused' : `fps: ${this.fps.detect.toFixed(1).padStart(5, ' ')} detect | ${this.fps.draw.toFixed(1).padStart(5, ' ')} draw`); // write status
-    setTimeout(() => this.drawLoop(), 30); // use to slow down refresh from max refresh rate to target of 30 fps
+    this.fps = 1000 / (now - this.timestamp);
+    this.timestamp = now;
+    this.setState({ ready: true, frame: this.state.frame + 1 });
   } 
 }
 
-export default LoadHuman;
+export default RunHuman;
