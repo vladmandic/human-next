@@ -22,7 +22,7 @@ Note: configuration in `next.config.js` is defined for deployment on [gitpages](
 ### Development
 
 - run: `npm dev`
-- navigate to: <http://localhost:3000/human-next/out>
+- navigate to: <http://localhost:3000>
 
 ### Production
 

@@ -16,8 +16,8 @@ module.exports = {
   images: {
     loader: 'custom',
   },
-  basePath: '/human-next/out',
-  assetPrefix: '/human-next/out/',
+  basePath: process.env.NODE_ENV === 'production' ? '/human-next/out' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/human-next/out/' : '',
   exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
     return {
       '/': { page: '/' },
