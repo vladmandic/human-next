@@ -31,19 +31,11 @@
     "safari >= 15"
   ],
   "dependencies": {
-<<<<<<< HEAD
-    "@vladmandic/human": "^2.7.3",
-    "next": "12.2.5",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
-    "sharp": "^0.30.5"
-=======
     "@vladmandic/human": "^2.9.3",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sharp": "^0.30.7"
->>>>>>> d38e21b (update)
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",
