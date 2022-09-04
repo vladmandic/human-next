@@ -1,5 +1,5 @@
 import { Component } from "react";
-import type { Human, Config } from '@vladmandic/human/dist/human.esm';
+import type { Human, Config } from '@vladmandic/human';
 import { log, status } from './logging';
 
 const config: Partial<Config> = {
@@ -27,7 +27,7 @@ class RunHuman extends Component<Props, State> {
     if (typeof document === 'undefined') return;
     this.video = document.getElementById(this.props.inputId) as (HTMLVideoElement | undefined) || document.createElement('video');
     this.canvas = document.getElementById(this.props.outputId) as (HTMLCanvasElement | undefined) || document.createElement('canvas');
-    import('@vladmandic/human/dist/human.esm').then((H) => {
+    import('@vladmandic/human').then((H) => {
       this.human = new H.default(config) as Human;
       log('human version:', this.human.version, '| tfjs version:', this.human.tf.version['tfjs-core']);
       log('platform:', this.human.env.platform, '| agent:', this.human.env.agent);
