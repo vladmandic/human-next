@@ -31,19 +31,19 @@
     "safari >= 15"
   ],
   "dependencies": {
-    "@vladmandic/human": "^2.9.3",
-    "next": "12.3.1",
+    "@vladmandic/human": "^3.0.1",
+    "next": "13.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "sharp": "^0.31.0"
+    "sharp": "^0.31.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.13",
-    "@types/node": "18.7.14",
+    "@babel/core": "^7.20.2",
+    "@types/node": "18.11.9",
     "@types/offscreencanvas": "^2019.7.0",
-    "@types/react": "18.0.18",
-    "eslint": "8.23.0",
-    "eslint-config-next": "12.2.5",
-    "typescript": "4.8.2"
+    "@types/react": "18.0.25",
+    "eslint": "8.28.0",
+    "eslint-config-next": "13.0.4",
+    "typescript": "4.9.3"
   }
 }

@@ -23,4 +23,8 @@ module.exports = {
       '/': { page: '/' },
     }
   },
+  webpack: (config, options) => {
+    config.module.rules.push({ test: /human.esm.js/, type: 'javascript/esm' });
+    return config
+  },
 }
